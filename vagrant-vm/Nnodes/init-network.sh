@@ -59,14 +59,25 @@ START_PORT=41000
 #INIT and START network nodes
 for ((i = 1; i <=$num; i++)) {
  echo "Init node $i" 
- geth --datadir nodes/node$i init $NETWORK_GENESIS_FILE &>> logs/node$i.log
+ geth --datadir nodes/node$i init $NETWORK_GENESIS_FILE &>> logs/node$i.log 
  echo "Start node $i" 
  echo "Type password for first node"
  read -s password
- echo $password > password.txt
- geth --datadir nodes/node$i $GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password password.txt \
-                                      --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($START_PORT + $i - 1)) &>> logs/node$i.log &
- echo $RES
- rm -rf password.txt
+ echo $password > password$i.txt
+ geth --datadir nodes/node$i $GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password password$i.txt \
+                                      --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($START_PORT + $i - 1)) &>> logs/node$i.log & 
+ #rm -rf password$i.txt
 }
+
+echo 'To stop network, type exit'
+read val
+COMMAND=`echo $val | tr '[:upper:]' '[:lower:]'`
+if [ $COMMAND = 'exit' ]
+then
+  killall -HUP geth &>/dev/null
+  for ((i = 1; i <=$num; i++)) {
+    rm -rf password$i.txt
+  }
+fi
+
 
