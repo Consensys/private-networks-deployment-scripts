@@ -40,6 +40,9 @@ done
 #GENERATE RANDOM ID for the network
 PUPPETH_ARG+="\n"
 
+#ADD SOMETHING FUN INTO A BLOCK
+PUPPETH_ARG+="\n"
+
 #GENERATE GENESIS FILE
 PUPPETH_ARG+="2\n2\n$NETWORK_GENESIS_FILE\n"
 
@@ -50,16 +53,20 @@ printf $PUPPETH_ARG | puppeth &> logs/puppeth_output.log
 
 #GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3"
 GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0"
-RPC_START_PORT=22000
-START_PORT=21000
+RPC_START_PORT=42000
+START_PORT=41000
+
 #INIT and START network nodes
 for ((i = 1; i <=$num; i++)) {
  echo "Init node $i" 
- echo "$($RPC_START_PORT + $i - 1)"
- geth --datadir nodes/node$i init $NETWORK_GENESIS_FILE
- geth --datadir nodes/node$i $GLOBAL_ARGS  --rpcport $(($RPC_START_PORT + $i - 1)) --port $(($START_PORT + $i - 1))
- echo "RES = $RES"
+ geth --datadir nodes/node$i init $NETWORK_GENESIS_FILE &>> logs/node$i.log
+ echo "Start node $i" 
+ echo "Type password for first node"
+ read -s password
+ echo $password > password.txt
+ geth --datadir nodes/node$i $GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password password.txt \
+                                      --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($START_PORT + $i - 1)) &>> logs/node$i.log &
+ echo $RES
+ rm -rf password.txt
 }
-
-cd ../
 
