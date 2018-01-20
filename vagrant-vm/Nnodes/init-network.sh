@@ -45,16 +45,21 @@ PUPPETH_ARG+="2\n2\n$NETWORK_GENESIS_FILE\n"
 
 echo "PUPPETH_ARG = $PUPPETH_ARG"
 
-
 #CALL puppeth network manager and pass arguments
 printf $PUPPETH_ARG | puppeth &> logs/puppeth_output.log
 
-#INIT network nodes
+#GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3"
+GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0"
+RPC_START_PORT=22000
+START_PORT=21000
+#INIT and START network nodes
 for ((i = 1; i <=$num; i++)) {
  echo "Init node $i" 
+ echo "$($RPC_START_PORT + $i - 1)"
  geth --datadir nodes/node$i init $NETWORK_GENESIS_FILE
+ geth --datadir nodes/node$i $GLOBAL_ARGS  --rpcport $(($RPC_START_PORT + $i - 1)) --port $(($START_PORT + $i - 1))
+ echo "RES = $RES"
 }
 
 cd ../
-
 
