@@ -89,6 +89,21 @@ for ((i = 1; i <= $num; i++)) {
   fi
 }
 
+#ADD PEERS
+for ((i = 1; i <= $num; i++)) {
+ if [ -e "nodes/node$i/geth.ipc" ]; then
+  echo "Add peer for $i"
+  OWNED_ENODE=`geth --exec 'admin.nodeInfo.enode' attach nodes/node$i/geth.ipc`
+  echo "Owned enode = $OWNED_ENODE"
+  while read line; do
+    if [ $OWNED_ENODE != $line ]; then
+      geth --exec "admin.addPeer($line)" attach nodes/node$i/geth.ipc >> "nodes_add_res.txt" 
+    fi
+    echo -e "$line\n";
+  done < $ENODES_FILE
+ fi
+}
+
 #RUN SMART CONTRACT
 echo "[*] Sending first transaction"
 geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
@@ -96,7 +111,7 @@ geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
 echo 'To stop network, type exit'
 read val
 COMMAND=`echo $val | tr '[:upper:]' '[:lower:]'`
-if [ $COMMAND = 'exit' ]
+if [ $COMMAND == 'exit' ]
 then
   killall geth > /dev/null 2>&1
   for ((i = 1; i <=$num; i++)) {
