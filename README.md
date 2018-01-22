@@ -1,9 +1,9 @@
 # private-networks-deployment-scripts
 This repository contains out-of-the-box deployment scripts for ethereum private PoA networks. 
-There are 2 sandboxes - vagrant virtual machine and docker container, both can be used to set up dev environment, create and run a private network.
+There are 2 sandboxes - vagrant virtual machine and docker container setups, both can be used to create dev environment, initiate and run a private network.
 Puppeth network manager is used to create new network and generate genesis file.
 
-**The goal** is to create 'out-of-box', 'one-click' solution for setting new private ethereum network.
+**The goal** is to create 'out-of-box', 'one-click' solution for setting up new private ethereum network.
 
 
 In progress:
