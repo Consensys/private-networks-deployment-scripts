@@ -30,7 +30,7 @@ RUN apt-get update && \
 
 # Install add-apt-repository
 RUN apt-get install -y build-essential unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev solc sysvbanner wrk \
-                   git python dstat ntp nodejs solc ethereum npm software-properties-common
+                   git python dstat ntp nodejs solc ethereum npm software-properties-common vim
 
 RUN mkdir -p /home/Nnodes
 ADD Nnodes /home/Nnodes
