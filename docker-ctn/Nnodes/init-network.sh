@@ -73,7 +73,7 @@ sleep 10
 
 #WAIT A BIT MORE FOR NODES TO START
 for ((i = 1; i <= $num; i++)) {
-  if [ ! -e "nodes/node$ind/geth.ipc" ]; then
+  if [ ! -e "nodes/node$i/geth.ipc" ]; then
     sleep 2
   fi
 }
@@ -111,11 +111,11 @@ echo "[*] To stop network, please type exit"
 read val
 COMMAND=`echo $val | tr '[:upper:]' '[:lower:]'`
 if [ $COMMAND == 'exit' ]; then
-  echo "[*] Bye!"
-  killall geth > /dev/null 2>&1
+  pkill geth > /dev/null 2>&1
   for ((i = 1; i <=$num; i++)) {
     rm -rf password$i.txt
   }
+  echo "[*] Bye!"
 fi
 
 cd ../
