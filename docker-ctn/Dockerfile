@@ -1,6 +1,5 @@
 FROM ubuntu:latest
 
-WORKDIR /work
 
 RUN apt-get update && \
     apt-get install -y \
@@ -24,26 +23,18 @@ RUN wget -q https://storage.googleapis.com/golang/$GOREL && \
     mv go /usr/local/go && \
     rm -f $GOREL
 
-
-# Install add-apt-repository
 RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common && \
     add-apt-repository ppa:ethereum/ethereum && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        libdb-dev \
-        libsodium-dev \
-        libtinfo-dev \
-        solc && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get update 
 
-RUN add-apt-repository ppa:ethereum/ethereum
-RUN apt-get update
+# Install add-apt-repository
 RUN apt-get install -y build-essential unzip libdb-dev libleveldb-dev libsodium-dev zlib1g-dev libtinfo-dev solc sysvbanner wrk \
-                   git python dstat ntp nodejs solc ethereum npm
+                   git python dstat ntp nodejs solc ethereum npm software-properties-common
 
 RUN mkdir -p /home/Nnodes
 ADD Nnodes /home/Nnodes
+#RUN cd /home/Nnodes
 
 # Temporary useful tools
 #RUN apt-get update && \
