@@ -78,14 +78,10 @@ for ((i = 1; i <= $num; i++)) {
   fi
 }
 
-#RUN SMART CONTRACT
-#echo "[*] Sending first transaction"
-#geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
-
 #Create file of enodes
 ENODES_FILE=enodes_list.txt
 rm -rf $ENODES_FILE
-for ((i=1 i <= $num; i++)) {
+for ((i = 1; i <= $num; i++)) {
   if [ -e "nodes/node$i/geth.ipc" ]; then
     echo "Directory found for node $i"
     geth --exec 'admin.nodeInfo.enode' attach nodes/node$i/geth.ipc >> $ENODES_FILE 
@@ -93,12 +89,16 @@ for ((i=1 i <= $num; i++)) {
   fi
 }
 
+#RUN SMART CONTRACT
+echo "[*] Sending first transaction"
+geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
+
 echo 'To stop network, type exit'
 read val
 COMMAND=`echo $val | tr '[:upper:]' '[:lower:]'`
 if [ $COMMAND = 'exit' ]
 then
-  killall -HUP geth &>/dev/null
+  killall geth > /dev/null 2>&1
   for ((i = 1; i <=$num; i++)) {
     rm -rf password$i.txt
   }
