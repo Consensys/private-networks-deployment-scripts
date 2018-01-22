@@ -70,32 +70,28 @@ for ((i = 1; i <=$num; i++)) {
 }
 echo "Setting up network ..."
 sleep 10
+
+#WAIT A BIT MORE FOR NODES TO START
+for ((i = 1; i <= $num; i++)) {
+  if [ ! -e "nodes/node$ind/geth.ipc" ]; then
+    sleep 2
+  fi
+}
+
+#RUN SMART CONTRACT
 #echo "[*] Sending first transaction"
 #geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
 
 #Create file of enodes
 ENODES_FILE=enodes_list.txt
 rm -rf $ENODES_FILE
-for j in `seq 1 2`; do
-  ind=1
-  while [ $ind -le $num ]; do
-  echo "Index i = $ind"
-# Control will enter here if $DIRECTORY exists.
-  if [ -e "nodes/node$ind/geth.ipc" ] 
-  then
-    echo "Directory found for node $ind"
-    geth --exec 'admin.nodeInfo.enode' attach nodes/node$ind/geth.ipc >> $ENODES_FILE 
-    ((ind++))
-  else 
-   echo "Network $ind is not started"
-   if [ $j -eq 1 ]; then
-      echo "Sleep for 2 seconds to wait for network $ind"
-      sleep 2
-   fi
-  ((ind++))
-fi
-done
-done
+for ((i=1 i <= $num; i++)) {
+  if [ -e "nodes/node$i/geth.ipc" ]; then
+    echo "Directory found for node $i"
+    geth --exec 'admin.nodeInfo.enode' attach nodes/node$i/geth.ipc >> $ENODES_FILE 
+  else "Please check node $i, there is something wrong with it"
+  fi
+}
 
 echo 'To stop network, type exit'
 read val
