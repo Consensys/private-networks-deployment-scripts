@@ -68,6 +68,34 @@ for ((i = 1; i <=$num; i++)) {
                                       --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($START_PORT + $i - 1)) &>> logs/node$i.log & 
  #rm -rf password$i.txt
 }
+echo "Setting up network ..."
+sleep 10
+#echo "[*] Sending first transaction"
+#geth --exec 'loadScript("../script1.js")' attach nodes/node1/geth.ipc
+
+#Create file of enodes
+ENODES_FILE=enodes_list.txt
+rm -rf $ENODES_FILE
+for j in `seq 1 2`; do
+  ind=1
+  while [ $ind -le $num ]; do
+  echo "Index i = $ind"
+# Control will enter here if $DIRECTORY exists.
+  if [ -e "nodes/node$ind/geth.ipc" ] 
+  then
+    echo "Directory found for node $ind"
+    geth --exec 'admin.nodeInfo.enode' attach nodes/node$ind/geth.ipc >> $ENODES_FILE 
+    ((ind++))
+  else 
+   echo "Network $ind is not started"
+   if [ $j -eq 1 ]; then
+      echo "Sleep for 2 seconds to wait for network $ind"
+      sleep 2
+   fi
+  ((ind++))
+fi
+done
+done
 
 echo 'To stop network, type exit'
 read val
@@ -79,5 +107,4 @@ then
     rm -rf password$i.txt
   }
 fi
-
 
