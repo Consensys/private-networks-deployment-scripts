@@ -38,4 +38,9 @@ In the top level directory:
     $ cd /home/Nnodes
     $ ./init-network.sh
     
+To connect to node console via IPC, please type
+    
+    $ geth attach ipc:nodes/NODE_NUM/geth.ipc
+
+    
     
