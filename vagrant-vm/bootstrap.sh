@@ -29,6 +29,24 @@ mv porosity /usr/local/bin && chmod 0755 /usr/local/bin/porosity
 
 # copy examples
 cp -r /vagrant/Nnodes /home/ubuntu/Nnodes
+cp -r /vagrant/netstat /home/ubuntu/netstat
+
+#SET netstat repositories
+cd /home/ubuntu/netstat
+git clone https://github.com/cubedro/eth-netstats
+cd eth-netstats
+npm install
+npm install -g grunt-cli
+ln -s /usr/bin/nodejs /usr/bin/node
+grunt
+cd ../
+
+git clone https://github.com/cubedro/eth-net-intelligence-api 
+cd eth-net-intelligence-api 
+npm install 
+npm install -g pm2 
+cd ../../
+
 #chown -R ubuntu:ubuntu /home/ubuntu/7nodes
 
 # done!
