@@ -53,8 +53,8 @@ printf $PUPPETH_ARG | puppeth &> logs/puppeth_output.log
 
 #GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0 --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3"
 GLOBAL_ARGS="--mine --rpc --rpcaddr 0.0.0.0"
-RPC_START_PORT=22000
-START_PORT=21000
+RPC_START_PORT=8100
+START_PORT=30300
 
 #INIT and START network nodes
 for ((i = 1; i <=$num; i++)) {
