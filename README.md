@@ -34,7 +34,7 @@ In the top level directory:
 
     $ cd docker-ctn
     $ docker build -t $CONTAINER_NAME .
-    $ docker run --name $CONTAINER_INSTANCE_NAME -i -t $CONTAINER_NAME
+    $ docker run -p 3000:3000 --name $CONTAINER_INSTANCE_NAME -i -t $CONTAINER_NAME
     $ cd /home/Nnodes
     $ ./init-network.sh
     
