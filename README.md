@@ -32,7 +32,7 @@ Script will ask you to define a name of future network, amount of nodes, passwor
 
 In the top level directory:
 
-    $ cd docker-ctn
+    $ cd /home/Nnodes/docker-ctn
     $ docker build -t $CONTAINER_NAME .
     $ docker run -p 3000:3000 --name $CONTAINER_INSTANCE_NAME -i -t $CONTAINER_NAME
     $ cd /home/Nnodes
@@ -41,6 +41,20 @@ In the top level directory:
 To connect to node console via IPC, please type
     
     $ geth attach ipc:nodes/NODE_NUM/geth.ipc
+    
+## Ethereum netstat
+
+Additionally you can run an ether netstat to see your PoA network information.
+
+In the 'Nnodes' directory:
+    
+    $ cd netstat
+    $ ./init-netstat.sh
+   
+If network successfully started, you will see something like this on http://localhost:3000
+![Created network information](https://github.com/ConsenSys/private-networks-deployment-scripts/blob/master/netstat_desktop.png)
+
+Please make sure port 3000 is free.
 
     
     
